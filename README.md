@@ -24,7 +24,7 @@ We provide all the datasets and prompts used in our experiments.
 
 + [[Re-TACRED]](../datasets/retacred)
 
-+ [[Wiki80]](../datasets/wiki80)
++ [[TACRED]](../datasets/tacred)
 
 The expected structure of files is:
 
@@ -43,7 +43,7 @@ knowprompt
  |    |    |-- dev.json
  |    |    |-- test.json
  |    |    |-- rel2id.json
- |    |-- wiki80
+ |    |-- tacred
  |    |    |-- train.txt       
  |    |    |-- dev.txt
  |    |    |-- test.txt
