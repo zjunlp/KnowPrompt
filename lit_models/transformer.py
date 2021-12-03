@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 from json import decoder
 from logging import debug
 import pytorch_lightning as pl
@@ -16,6 +17,7 @@ from transformers.optimization import get_linear_schedule_with_warmup
 
 from functools import partial
 
+import random
 
 def mask_hook(grad_input, st, ed):
     mask = torch.zeros((grad_input.shape[0], 1)).type_as(grad_input)
@@ -34,6 +36,71 @@ def multilabel_categorical_crossentropy(y_pred, y_true):
     neg_loss = torch.logsumexp(y_pred_neg, dim=-1)
     pos_loss = torch.logsumexp(y_pred_pos, dim=-1)
     return (neg_loss + pos_loss).mean()
+
+# class AMSoftmax(nn.Module):
+#     def __init__(self,
+#                  in_feats,
+#                  n_classes=10,
+#                  m=0.35,
+#                  s=30):
+#         super(AMSoftmax, self).__init__()
+#         self.m = m
+#         self.s = s
+#         self.in_feats = in_feats
+#         self.W = torch.nn.Linear(in_feats, n_classes)
+#         # self.W = torch.nn.Parameter(torch.randn(in_feats, n_classes), requires_grad=True)
+#         self.ce = nn.CrossEntropyLoss()
+#         # nn.init.xavier_normal_(self.W, gain=1)
+
+#     def forward(self, x, lb):
+#         assert x.size()[0] == lb.size()[0]
+#         assert x.size()[1] == self.in_feats
+#         x_norm = torch.norm(x, p=2, dim=1, keepdim=True).clamp(min=1e-12)
+#         x_norm = torch.div(x, x_norm)
+#         w_norm = torch.norm(self.W, p=2, dim=0, keepdim=True).clamp(min=1e-12)
+#         w_norm = torch.div(self.W, w_norm)
+#         costh = torch.mm(x_norm, w_norm)
+#         # print(x_norm.shape, w_norm.shape, costh.shape)
+#         lb_view = lb.view(-1, 1)
+#         if lb_view.is_cuda: lb_view = lb_view.cpu()
+#         delt_costh = torch.zeros(costh.size()).scatter_(1, lb_view, self.m)
+#         if x.is_cuda: delt_costh = delt_costh.cuda()
+#         costh_m = costh - delt_costh
+#         costh_m_s = self.s * costh_m
+#         loss = self.ce(costh_m_s, lb)
+#         return loss, costh_m_s
+
+# class AMSoftmax(nn.Module):
+
+#     def __init__(self, in_features, out_features, s=30.0, m=0.35):
+#         '''
+#         AM Softmax Loss
+#         '''
+#         super().__init__()
+#         self.s = s
+#         self.m = m
+#         self.in_features = in_features
+#         self.out_features = out_features
+#         self.fc = nn.Linear(in_features, out_features, bias=False)
+
+#     def forward(self, x, labels):
+#         '''
+#         input shape (N, in_features)
+#         '''
+#         assert len(x) == len(labels)
+#         assert torch.min(labels) >= 0
+#         assert torch.max(labels) < self.out_features
+#         for W in self.fc.parameters():
+#             W = F.normalize(W, dim=1)
+
+#         x = F.normalize(x, dim=1)
+
+#         wf = self.fc(x)
+#         numerator = self.s * (torch.diagonal(wf.transpose(0, 1)[labels]) - self.m)
+#         excl = torch.cat([torch.cat((wf[i, :y], wf[i, y+1:])).unsqueeze(0) for i, y in enumerate(labels)], dim=0)
+#         denominator = torch.exp(numerator) + torch.sum(torch.exp(self.s * excl), dim=1)
+#         L = numerator - torch.log(denominator)
+#         return -torch.mean(L)
 
 
 class BertLitModel(BaseLitModel):
@@ -55,6 +122,7 @@ class BertLitModel(BaseLitModel):
         num_relation = len(rel2id)
         # init loss function
         self.loss_fn = multilabel_categorical_crossentropy if "dialogue" in args.data_dir else nn.CrossEntropyLoss()
+        # self.loss_fn = AMSoftmax(self.model.config.hidden_size, num_relation)
         # ignore the no_relation class to compute the f1 score
         self.eval_fn = f1_eval if "dialogue" in args.data_dir else partial(f1_score, rel_num=num_relation, na_num=Na_num)
         self.best_f1 = 0
@@ -64,6 +132,10 @@ class BertLitModel(BaseLitModel):
         self.tokenizer = tokenizer
     
         self._init_label_word()
+        
+        # with torch.no_grad():
+        #     self.loss_fn.fc.weight = nn.Parameter(self.model.get_output_embeddings().weight[self.label_st_id:self.label_st_id+num_relation])
+            # self.loss_fn.fc.bias = nn.Parameter(self.model.get_output_embeddings().bias[self.label_st_id:self.label_st_id+num_relation])
 
     def _init_label_word(self, ):
         args = self.args
@@ -116,13 +188,29 @@ class BertLitModel(BaseLitModel):
         logits = result.logits
         output_embedding = result.hidden_states[-1]
         logits = self.pvp(logits, input_ids)
-        loss = self.loss_fn(logits, labels) + self.t_lambda * self.ke_loss(output_embedding, labels, so)
+        # logits = self.model.roberta(input_ids, attention_mask).last_hidden_state
+        # loss = self.get_loss(logits, input_ids, labels)
+
+        ke_loss = self.ke_loss(output_embedding, labels, so, input_ids)
+        loss = self.loss_fn(logits, labels) + self.t_lambda * ke_loss
         self.log("Train/loss", loss)
+        self.log("Train/ke_loss", loss)
         return loss
+    
+    def get_loss(self, logits, input_ids, labels):
+        _, mask_idx = (input_ids == self.tokenizer.mask_token_id).nonzero(as_tuple=True)
+        bs = input_ids.shape[0]
+        mask_output = logits[torch.arange(bs), mask_idx]
+        
+        loss = self.loss_fn(mask_output, labels)
+        return loss
+
 
     def validation_step(self, batch, batch_idx):  # pylint: disable=unused-argument
         input_ids, attention_mask, labels, _ = batch
         logits = self.model(input_ids, attention_mask, return_dict=True).logits
+        # logits = self.model.roberta(input_ids, attention_mask).last_hidden_state
+        # loss = self.loss_fn(logits, labels)
         logits = self.pvp(logits, input_ids)
         loss = self.loss_fn(logits, labels)
         self.log("Eval/loss", loss)
@@ -157,6 +245,7 @@ class BertLitModel(BaseLitModel):
     def add_to_argparse(parser):
         BaseLitModel.add_to_argparse(parser)
         parser.add_argument("--t_lambda", type=float, default=0.01, help="")
+        parser.add_argument("--t_gamma", type=float, default=0.3, help="")
         return parser
         
     def pvp(self, logits, input_ids):
@@ -170,7 +259,7 @@ class BertLitModel(BaseLitModel):
         
         return final_output
         
-    def ke_loss(self, logits, labels, so):
+    def ke_loss(self, logits, labels, so, input_ids):
         subject_embedding = []
         object_embedding = []
         neg_subject_embedding = []
@@ -193,12 +282,17 @@ class BertLitModel(BaseLitModel):
         neg_subject_embedding = torch.stack(neg_subject_embedding)
         neg_object_embedding = torch.stack(neg_object_embedding)
         # trick , the relation ids is concated, 
-        relation_embedding = self.model.get_output_embeddings().weight[labels+self.label_st_id]
+
+
+        _, mask_idx = (input_ids == self.tokenizer.mask_token_id).nonzero(as_tuple=True)
+        mask_output = logits[torch.arange(bsz), mask_idx]
+        mask_relation_embedding = mask_output
+        real_relation_embedding = self.model.get_output_embeddings().weight[labels+self.label_st_id]
         
-        d_1 = torch.norm(subject_embedding + relation_embedding - object_embedding, p=2) / bsz
-        d_2 = torch.norm(neg_subject_embedding + relation_embedding - neg_object_embedding, p=2) / bsz
+        d_1 = torch.norm(subject_embedding + mask_relation_embedding - object_embedding, p=2) / bsz
+        d_2 = torch.norm(neg_subject_embedding + real_relation_embedding - neg_object_embedding, p=2) / bsz
         f = torch.nn.LogSigmoid()
-        loss = -1.*f(0.3 - d_1) - f(d_2 - 0.3)
+        loss = -1.*f(self.args.t_gamma - d_1) - f(d_2 - self.args.t_gamma)
         
         return loss
 
