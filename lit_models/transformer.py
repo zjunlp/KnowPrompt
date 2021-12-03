@@ -173,17 +173,32 @@ class BertLitModel(BaseLitModel):
     def ke_loss(self, logits, labels, so):
         subject_embedding = []
         object_embedding = []
+        neg_subject_embedding = []
+        neg_object_embedding = []
         bsz = logits.shape[0]
         for i in range(bsz):
             subject_embedding.append(torch.mean(logits[i, so[i][0]:so[i][1]], dim=0))
             object_embedding.append(torch.mean(logits[i, so[i][2]:so[i][3]], dim=0))
+
+            # random select the neg samples
+            st_sub = random.randint(1, logits[i].shape[0] - 6)
+            span_sub = random.randint(1, 5)
+            st_obj = random.randint(1, logits[i].shape[0] - 6)
+            span_obj = random.randint(1, 5)
+            neg_subject_embedding.append(torch.mean(logits[i, st_sub:st_sub+span_sub], dim=0))
+            neg_object_embedding.append(torch.mean(logits[i, st_obj:st_obj+span_obj], dim=0))
             
         subject_embedding = torch.stack(subject_embedding)
         object_embedding = torch.stack(object_embedding)
+        neg_subject_embedding = torch.stack(neg_subject_embedding)
+        neg_object_embedding = torch.stack(neg_object_embedding)
         # trick , the relation ids is concated, 
         relation_embedding = self.model.get_output_embeddings().weight[labels+self.label_st_id]
         
-        loss = torch.norm(subject_embedding + relation_embedding - object_embedding, p=2)
+        d_1 = torch.norm(subject_embedding + relation_embedding - object_embedding, p=2) / bsz
+        d_2 = torch.norm(neg_subject_embedding + relation_embedding - neg_object_embedding, p=2) / bsz
+        f = torch.nn.LogSigmoid()
+        loss = -1.*f(0.3 - d_1) - f(d_2 - 0.3)
         
         return loss
 
