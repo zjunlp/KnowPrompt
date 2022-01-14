@@ -3,6 +3,11 @@
 
 Code and datasets for our paper "KnowPrompt: Knowledge-aware Prompt-tuning  with  Synergistic Optimization for Relation Extraction"
 
+# What's New
+
+## Jan,14 2022
+* Our paper [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2104.07650) has been accepted by WWW2022.
+
 Requirements
 ==========
 To install requirements:
@@ -120,7 +125,7 @@ If you use the code, please cite the following paper:
 
 
 ```bibtex
-@article{Zhang_DeepKE_A_Deep_2022,
+@article{chenKnowprompt2022,
 author = {Chen, xiang and Zhang, Ningyu and Xie, Xin and Deng, Shumin and Yao, Yunzhi and Tan, Chuanqi and Huang, Fei and Si, Luo and Chen, Huajun},
 journal = {International World Wide Web Conferences (WWW)},
 title = {{KnowPrompt: Knowledge-aware Prompt-tuning with Synergistic Optimization for Relation Extraction
