@@ -6,7 +6,7 @@ Code and datasets for our paper "KnowPrompt: Knowledge-aware Prompt-tuning  with
 # What's New
 
 ## Jan,14 2022
-* Our paper [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2104.07650) has been accepted by WWW2022.
+* Our paper [KnowPrompt: Knowledge-aware Prompt-tuning with Synergistic Optimization for Relation Extraction](https://arxiv.org/abs/2104.07650) has been accepted by WWW2022.
 
 Requirements
 ==========
