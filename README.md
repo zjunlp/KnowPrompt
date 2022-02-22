@@ -126,7 +126,7 @@ If you use the code, please cite the following paper:
 
 ```bibtex
 @article{chenKnowprompt2022,
-author = {Chen, xiang and Zhang, Ningyu and Xie, Xin and Deng, Shumin and Yao, Yunzhi and Tan, Chuanqi and Huang, Fei and Si, Luo and Chen, Huajun},
+author = {Chen, Xiang and Zhang, Ningyu and Xie, Xin and Deng, Shumin and Yao, Yunzhi and Tan, Chuanqi and Huang, Fei and Si, Luo and Chen, Huajun},
 journal = {International World Wide Web Conferences (WWW)},
 title = {{KnowPrompt: Knowledge-aware Prompt-tuning with Synergistic Optimization for Relation Extraction
 }},
