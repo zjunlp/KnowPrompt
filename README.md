@@ -23,13 +23,13 @@ We provide all the datasets and prompts used in our experiments.
 
 + [[SEMEVAL]](dataset/semeval)
 
-+ [[DialogRE]](../datasets/dialogue)
++ [[DialogRE]](dataset/dialogue)
 
-+ [[TACRED-Revisit]](../datasets/tacrev)
++ [[TACRED-Revisit]](dataset/tacrev)
 
-+ [[Re-TACRED]](../datasets/retacred)
++ [[Re-TACRED]](dataset/retacred)
 
-+ [[TACRED]](../datasets/tacred)
++ [[TACRED]](dataset/tacred)
 
 The expected structure of files is:
 
