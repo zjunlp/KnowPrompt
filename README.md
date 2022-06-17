@@ -123,6 +123,10 @@ Train the KonwPrompt model on DialogRE with the following command:
 >> bash scripts/dialogue.sh  # for roberta-base
 ```
 
+# Acknowledgement
+
+Part of our code is borrowed from [code](https://github.com/thunlp/PTR) of [PTR](https://arxiv.org/abs/2105.11259), many thanks.
+
 # Citation
 If you use the code, please cite the following paper:
 
