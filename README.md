@@ -125,7 +125,7 @@ Train the KonwPrompt model on DialogRE with the following command:
 
 # Acknowledgement
 
-Part of our code is borrowed from [code](https://github.com/thunlp/PTR) of [PTR](https://arxiv.org/abs/2105.11259), many thanks.
+Part of our code is borrowed from [code](https://github.com/thunlp/PTR) of [PTR: Prompt Tuning with Rules for Text Classification](https://arxiv.org/abs/2105.11259), many thanks.
 
 # Citation
 If you use the code, please cite the following paper:
