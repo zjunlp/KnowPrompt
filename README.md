@@ -16,6 +16,14 @@ Code and datasets for the WWW2022 paper [KnowPrompt: Knowledge-aware Prompt-tuni
 
 Requirements
 ==========
+It is recommended to use a virtual environment to run KnowPrompt.
+
+```bash
+conda create -n knowprompt python=3.8
+
+conda activate knowprompt
+```
+
 To install requirements:
 
 ```
