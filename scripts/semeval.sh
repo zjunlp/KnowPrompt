@@ -12,5 +12,3 @@ CUDA_VISIBLE_DEVICES=0 python main.py --max_epochs=10  --num_workers=8 \
     --litmodel_class BertLitModel \
     --task_name wiki80 \
     --lr 3e-5
-
-# 90.2
