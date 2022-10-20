@@ -1,7 +1,9 @@
 # KnowPrompt
 
 
-Code and datasets for the WWW2022 paper [KnowPrompt: Knowledge-aware Prompt-tuning  with  Synergistic Optimization for Relation Extraction](https://arxiv.org/pdf/2104.07650.pdf).
+Code and datasets for the WWW2022 paper [KnowPrompt: Knowledge-aware Prompt-tuning  with  Synergistic Optimization for Relation Extraction](https://arxiv.org/pdf/2104.07650.pdf). 
+
+<div align=center><img src="resources/img/model.png" width="80%" height="80%" /></div>
 
 # What's New
 
@@ -14,8 +16,9 @@ Code and datasets for the WWW2022 paper [KnowPrompt: Knowledge-aware Prompt-tuni
 ## Jan,14 2022
 * Our paper [KnowPrompt: Knowledge-aware Prompt-tuning with Synergistic Optimization for Relation Extraction](https://arxiv.org/abs/2104.07650) has been accepted by WWW2022.
 
-Requirements
-==========
+
+# Requirements
+
 It is recommended to use a virtual environment to run KnowPrompt.
 
 ```bash
@@ -133,6 +136,10 @@ Train the KonwPrompt model on DialogRE with the following command:
 ```bash
 >> bash scripts/dialogue.sh  # for roberta-base
 ```
+
+## More emperical results
+
+We report emperical results on more datasets in the EMNLP 2022 (Findings) paper "[Towards Realistic Low-resource Relation Extraction: A Benchmark with Empirical Baseline Study](https://arxiv.org/pdf/2210.10678.pdf)" [[code](https://github.com/zjunlp/LREBench)].
 
 # Acknowledgement
 
