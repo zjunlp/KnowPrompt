@@ -150,27 +150,34 @@ If you use the code, please cite the following paper:
 
 
 ```bibtex
-@article{DBLP:journals/corr/abs-2205-10843,
-  author    = {Yincen Qu and
+@inproceedings{DBLP:conf/www/ChenZXDYTHSC22,
+  author    = {Xiang Chen and
                Ningyu Zhang and
-               Hui Chen and
-               Zelin Dai and
-               Zezhong Xu and
-               Chengming Wang and
-               Xiaoyu Wang and
-               Qiang Chen and
+               Xin Xie and
+               Shumin Deng and
+               Yunzhi Yao and
+               Chuanqi Tan and
+               Fei Huang and
+               Luo Si and
                Huajun Chen},
-  title     = {Commonsense Knowledge Salience Evaluation with a Benchmark Dataset
-               in E-commerce},
-  journal   = {CoRR},
-  volume    = {abs/2205.10843},
+  editor    = {Fr{\'{e}}d{\'{e}}rique Laforest and
+               Rapha{\"{e}}l Troncy and
+               Elena Simperl and
+               Deepak Agarwal and
+               Aristides Gionis and
+               Ivan Herman and
+               Lionel M{\'{e}}dini},
+  title     = {KnowPrompt: Knowledge-aware Prompt-tuning with Synergistic Optimization
+               for Relation Extraction},
+  booktitle = {{WWW} '22: The {ACM} Web Conference 2022, Virtual Event, Lyon, France,
+               April 25 - 29, 2022},
+  pages     = {2778--2788},
+  publisher = {{ACM}},
   year      = {2022},
-  url       = {https://doi.org/10.48550/arXiv.2205.10843},
-  doi       = {10.48550/arXiv.2205.10843},
-  eprinttype = {arXiv},
-  eprint    = {2205.10843},
-  timestamp = {Mon, 30 May 2022 15:47:29 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/abs-2205-10843.bib},
+  url       = {https://doi.org/10.1145/3485447.3511998},
+  doi       = {10.1145/3485447.3511998},
+  timestamp = {Tue, 26 Apr 2022 16:02:09 +0200},
+  biburl    = {https://dblp.org/rec/conf/www/ChenZXDYTHSC22.bib},
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
