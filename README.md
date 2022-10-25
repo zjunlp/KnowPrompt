@@ -8,10 +8,10 @@ Code and datasets for the WWW2022 paper [KnowPrompt: Knowledge-aware Prompt-tuni
 # What's New
 
 ## September,21 2022
-* Our follow-up paper on prompting NLP [Decoupling Knowledge from Memorization: Retrieval-augmented Prompt Learning](https://arxiv.org/abs/2205.14704)) has been accepted by NeurIPS2022. The project address is visible at [RetroPrompt](https://github.com/zjunlp/PromptKG/tree/main/research/RetroPrompt).
+* Our follow-up paper on prompting NLP [Decoupling Knowledge from Memorization: Retrieval-augmented Prompt Learning](https://arxiv.org/abs/2205.14704) has been accepted by NeurIPS2022. The project address is visible at [RetroPrompt](https://github.com/zjunlp/PromptKG/tree/main/research/RetroPrompt).
 
 ## March,30 2022
-* Our follow-up paper on prompting RE [Relation Extraction as Open-book Examination: Retrieval-enhanced Prompt Tuning](https://arxiv.org/abs/2205.02355)) has been accepted by SIGIR2022. The project address is visible at [RetrievalRE](https://github.com/zjunlp/PromptKG/tree/main/research/RetrievalRE).
+* Our follow-up paper on prompting RE [Relation Extraction as Open-book Examination: Retrieval-enhanced Prompt Tuning](https://arxiv.org/abs/2205.02355) has been accepted by SIGIR2022. The project address is visible at [RetrievalRE](https://github.com/zjunlp/PromptKG/tree/main/research/RetrievalRE).
 
 ## Jan,14 2022
 * Our paper [KnowPrompt: Knowledge-aware Prompt-tuning with Synergistic Optimization for Relation Extraction](https://arxiv.org/abs/2104.07650) has been accepted by WWW2022.
