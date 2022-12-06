@@ -3,6 +3,8 @@
 
 Code and datasets for the WWW2022 paper [KnowPrompt: Knowledge-aware Prompt-tuning  with  Synergistic Optimization for Relation Extraction](https://arxiv.org/pdf/2104.07650.pdf). 
 
+- ❗NOTE: We provide a paper-list at [PromptKG](https://github.com/zjunlp/PromptKG).
+
 <div align=center><img src="model.png" width="80%" height="80%" /></div>
 
 # What's New
