@@ -9,6 +9,9 @@ Code and datasets for the WWW2022 paper [KnowPrompt: Knowledge-aware Prompt-tuni
 
 # What's New
 
+## Dec,7 2022
+* We release the checkpoint for `SemEval` dataset at [huggingface model hub](https://huggingface.co/zjunlp/KnowPrompt)
+
 ## Sept,21 2022
 * Our follow-up paper on prompting NLP [Decoupling Knowledge from Memorization: Retrieval-augmented Prompt Learning](https://arxiv.org/abs/2205.14704) has been accepted by NeurIPS2022. The project address is visible at [RetroPrompt](https://github.com/zjunlp/PromptKG/tree/main/research/RetroPrompt).
 
